@@ -53,8 +53,14 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Productivity App'),
-        backgroundColor: Colors.transparent,
+        title: Text(
+          'Productivity App',
+          style: GoogleFonts.syne(
+              fontSize: 24,
+              fontWeight: FontWeight.w600,
+              color: const Color.fromARGB(255, 3, 99, 48)),
+        ),
+        backgroundColor: const Color(0xff8CF2BB),
       ),
       backgroundColor: const Color(0xffF9F9F9),
       body: Container(
@@ -62,6 +68,9 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(
+              height: 10,
+            ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
@@ -100,10 +109,22 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                'Tasks',
-                style:
-                    GoogleFonts.syne(fontSize: 24, fontWeight: FontWeight.bold),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Tasks',
+                    style: GoogleFonts.syne(
+                        fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  IconButton(
+                      onPressed: addActivity,
+                      icon: const Icon(
+                        size: 25,
+                        Icons.add_circle_outline_outlined,
+                        color: Color.fromARGB(255, 60, 175, 114),
+                      )),
+                ],
               ),
             ),
             const SizedBox(
@@ -112,17 +133,6 @@ class _MyHomePageState extends State<MyHomePage> {
             taskList()
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: addActivity,
-        // onPressed: () {
-        //   Navigator.pushReplacement(
-        //     context,
-        //     MaterialPageRoute(builder: (context) => EquipmentDocument()),
-        //   );
-        // },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
@@ -155,8 +165,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: GoogleFonts.syne(
                     fontSize: 20, color: const Color(0xff1E1E1E)),
               ),
-              subtitle: Text(activity.description),
+              // subtitle: Text(activity.description),
               trailing: PopupMenuButton(
+                color: Colors.white,
                 itemBuilder: (context) {
                   return [
                     PopupMenuItem(
@@ -186,8 +197,8 @@ class _MyHomePageState extends State<MyHomePage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ActivityDetail(
-                                        idActivity: activity.title,
-                                      ))),
+                                      title: activity.title,
+                                      description: activity.description))),
                           icon: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -266,7 +277,7 @@ class _MyHomePageState extends State<MyHomePage> {
           return AlertDialog(
             title: const Text('Add Activity'),
             content: SizedBox(
-              height: 150, // Set a specific height for the content
+              height: 150,
               child: Column(
                 mainAxisSize: MainAxisSize
                     .min, // Ensures the column only takes the necessary space
@@ -282,6 +293,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     decoration: const InputDecoration(
                       labelText: 'Description',
                     ),
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
                   ),
                 ],
               ),

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ActivityDetail extends StatefulWidget {
-  final String idActivity;
-  const ActivityDetail({super.key, required this.idActivity});
+  final String title;
+  final String description;
+  const ActivityDetail(
+      {super.key, required this.title, required this.description});
 
   @override
   State<ActivityDetail> createState() => _MyWidgetState();
@@ -18,7 +20,7 @@ class _MyWidgetState extends State<ActivityDetail> {
           'Activity Detail',
           style: GoogleFonts.syne(fontSize: 24, fontWeight: FontWeight.w600),
         ),
-        backgroundColor: Colors.transparent,
+        backgroundColor: const Color(0xff8CF2BB),
       ),
       backgroundColor: const Color(0xffF9F9F9),
       body: SafeArea(
@@ -28,11 +30,18 @@ class _MyWidgetState extends State<ActivityDetail> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.idActivity,
+                widget.title,
                 style: GoogleFonts.syne(
                     color: const Color(0xff1E1E1E),
-                    fontSize: 16,
+                    fontSize: 20,
                     fontWeight: FontWeight.w600),
+              ),
+              Text(
+                widget.description,
+                style: GoogleFonts.syne(
+                    color: const Color(0xff1E1E1E),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500),
               )
             ],
           ),
