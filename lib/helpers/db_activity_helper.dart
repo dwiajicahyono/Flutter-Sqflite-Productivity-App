@@ -1,3 +1,4 @@
+// ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:productivity_app/models/db_activity.dart';

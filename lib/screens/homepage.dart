@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:productivity_app/models/db_activity.dart';
 import 'package:productivity_app/helpers/db_activity_helper.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:productivity_app/screens/activity_detail.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -14,8 +16,6 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   List<Activity> activities = [];
-
-  String counter = '';
 
   @override
   void initState() {
@@ -44,12 +44,6 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  void _incrementCounter() {
-    setState(() {
-      counter = 'Hello World';
-    });
-  }
-
   Future<void> _deleteActivity(int id) async {
     await dbACtivityHelper.deleteDataActivity(id);
     _loadActivities();
@@ -60,64 +54,265 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Productivity App'),
+        backgroundColor: Colors.transparent,
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: TextField(
-              controller: titleController,
-              decoration: const InputDecoration(
-                labelText: 'Title',
+      backgroundColor: const Color(0xffF9F9F9),
+      body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                'Activity',
+                style:
+                    GoogleFonts.syne(fontSize: 24, fontWeight: FontWeight.bold),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: TextField(
-              controller: descriptionController,
-              decoration: const InputDecoration(
-                labelText: 'Description',
+            const SizedBox(
+              height: 15,
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              height: 232,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 0,
+                    blurRadius: 10,
+                    offset: const Offset(7, 1),
+                  ),
+                ],
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.white,
+              ),
+              child: Text(
+                'grafik',
+                style:
+                    GoogleFonts.syne(fontSize: 24, fontWeight: FontWeight.bold),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              onPressed: _addActivity,
-              child: const Text('Add'),
+            const SizedBox(
+              height: 15,
             ),
-          ),
-          const Divider(),
-          Expanded(
-            child: ListView.builder(
-              itemCount: activities.length,
-              itemBuilder: (context, index) {
-                final activity = activities[index];
-                return ListTile(
-                  title: Text(activity.title),
-                  subtitle: Text(activity.description),
-                  trailing: IconButton(
-                      onPressed: () => _deletePopup(activity.id!),
-                      // onPressed: () => _deleteActivity(activity.id!),
-                      icon: Icon(Icons.delete)),
-                );
-              },
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                'Tasks',
+                style:
+                    GoogleFonts.syne(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
             ),
-          )
-        ],
+            const SizedBox(
+              height: 15,
+            ),
+            taskList()
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: addActivity,
+        // onPressed: () {
+        //   Navigator.pushReplacement(
+        //     context,
+        //     MaterialPageRoute(builder: (context) => EquipmentDocument()),
+        //   );
+        // },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
     );
   }
 
+  Expanded taskList() {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: activities.length,
+        itemBuilder: (context, index) {
+          final activity = activities[index];
+          return Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 0,
+                  blurRadius: 10,
+                  offset: const Offset(7, 1),
+                ),
+              ],
+              borderRadius:
+                  BorderRadius.circular(12), // Menambahkan border radius
+            ),
+            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            child: ListTile(
+              title: Text(
+                activity.title,
+                style: GoogleFonts.syne(
+                    fontSize: 20, color: const Color(0xff1E1E1E)),
+              ),
+              subtitle: Text(activity.description),
+              trailing: PopupMenuButton(
+                itemBuilder: (context) {
+                  return [
+                    PopupMenuItem(
+                      value: '/hello',
+                      child: IconButton(
+                          onPressed: () => _deletePopup(activity.id!),
+                          icon: Row(
+                            children: [
+                              const Icon(
+                                Icons.delete,
+                                color: Colors.red,
+                              ),
+                              const SizedBox(width: 8.0),
+                              Text(
+                                'Delete',
+                                style: GoogleFonts.syne(
+                                    fontSize: 16,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w600),
+                              )
+                            ],
+                          )),
+                    ),
+                    PopupMenuItem(
+                      child: IconButton(
+                          onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ActivityDetail(
+                                        idActivity: activity.title,
+                                      ))),
+                          icon: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Icon(
+                                Icons.info_outline,
+                                color: Colors.blue,
+                              ),
+                              const SizedBox(width: 8.0),
+                              Text(
+                                'Info',
+                                style: GoogleFonts.syne(
+                                    fontSize: 16,
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.w600),
+                              )
+                            ],
+                          )),
+                    ),
+                  ];
+                },
+              ),
+              // trailing: IconButton(
+              //     onPressed: () => _deletePopup(activity.id!),
+              //     // onPressed: () => _deleteActivity(activity.id!),
+              //     icon: const Icon(Icons.delete)),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   Future<void> _deletePopup(int idActivity) async {
-    print(idActivity);
-    // showDialog(context: context, builder: );
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Delete Activity'),
+            content:
+                const Text('Are you sure you want to delete this activity?'),
+            actions: [
+              ElevatedButton(
+                  onPressed: () async {
+                    await _deleteActivity(idActivity);
+
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Activity deleted successfully"),
+                        duration: Duration(seconds: 3),
+                        backgroundColor: Colors.green,
+                      ));
+                    }
+
+                    if (context.mounted) {
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                      // Navigator.of(context).pop();
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                  child: const Text(
+                    "Yes",
+                    style: TextStyle(color: Colors.white),
+                  )),
+              ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text("Cancel"))
+            ],
+          );
+        });
+  }
+
+  Future<void> addActivity() async {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Add Activity'),
+            content: SizedBox(
+              height: 150, // Set a specific height for the content
+              child: Column(
+                mainAxisSize: MainAxisSize
+                    .min, // Ensures the column only takes the necessary space
+                children: [
+                  TextField(
+                    controller: titleController,
+                    decoration: const InputDecoration(
+                      labelText: 'Title',
+                    ),
+                  ),
+                  TextField(
+                    controller: descriptionController,
+                    decoration: const InputDecoration(
+                      labelText: 'Description',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text("Cancel")),
+              ElevatedButton(
+                  onPressed: () async {
+                    await _addActivity();
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Activity Add successfully"),
+                        duration: Duration(seconds: 3),
+                        backgroundColor: Colors.green,
+                      ));
+                    }
+
+                    if (context.mounted) {
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                  child: const Text(
+                    "Yes",
+                    style: TextStyle(color: Colors.white),
+                  )),
+            ],
+          );
+        });
   }
 }
