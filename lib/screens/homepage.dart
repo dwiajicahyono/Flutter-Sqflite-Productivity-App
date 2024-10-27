@@ -3,6 +3,8 @@ import 'package:productivity_app/models/db_activity.dart';
 import 'package:productivity_app/helpers/db_activity_helper.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:productivity_app/screens/activity_detail.dart';
+import 'package:productivity_app/helpers/colors_helper.dart';
+import 'package:productivity_app/components/chart_ui.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -58,9 +60,8 @@ class _MyHomePageState extends State<MyHomePage> {
           style: GoogleFonts.syne(
               fontSize: 24,
               fontWeight: FontWeight.w600,
-              color: const Color.fromARGB(255, 3, 99, 48)),
+              color: AppColors.barColor),
         ),
-        backgroundColor: const Color(0xff8CF2BB),
       ),
       backgroundColor: const Color(0xffF9F9F9),
       body: Container(
@@ -75,8 +76,10 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
                 'Activity',
-                style:
-                    GoogleFonts.syne(fontSize: 24, fontWeight: FontWeight.bold),
+                style: GoogleFonts.syne(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.titleColor),
               ),
             ),
             const SizedBox(
@@ -84,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8),
-              height: 232,
+              // height: 232,
               width: double.infinity,
               decoration: BoxDecoration(
                 boxShadow: [
@@ -96,13 +99,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
                 borderRadius: BorderRadius.circular(12),
-                color: Colors.white,
+                color: AppColors.backgroundColor,
               ),
-              child: Text(
-                'grafik',
-                style:
-                    GoogleFonts.syne(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
+              // child: Text(
+              //   'grafik',
+              //   style:
+              //       GoogleFonts.syne(fontSize: 24, fontWeight: FontWeight.bold),
+              // ),
+              child: BarChartSample(),
             ),
             const SizedBox(
               height: 15,
@@ -115,7 +119,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text(
                     'Tasks',
                     style: GoogleFonts.syne(
-                        fontSize: 24, fontWeight: FontWeight.bold),
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.titleColor),
                   ),
                   IconButton(
                       onPressed: addActivity,
@@ -158,7 +164,8 @@ class _MyHomePageState extends State<MyHomePage> {
               borderRadius:
                   BorderRadius.circular(12), // Menambahkan border radius
             ),
-            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
             child: ListTile(
               title: Text(
                 activity.title,
